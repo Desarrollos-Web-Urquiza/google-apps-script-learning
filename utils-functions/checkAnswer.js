@@ -1,8 +1,10 @@
-function checkAnswer() {
+function checkAnswer(letterOfColumnOfItemsForChecks, URLofAnswers, letterOfColumnFromAnswers) {
   // https://docs.google.com/forms/d/e/1FAIpQLSddUu96_59W5A_erBxxYP7036CjeEnQulH62w-YZOzpBesW2Q/viewform
   // let answerFile = SpreadsheetApp.getActiveSheet(); //https://docs.google.com/spreadsheets/d/1gN2eF_l9xek_ax_dFDFSbVw3izU8c7YeNWqOcCMvbBY/edit#gid=1264652990
-  let answerItems = SpreadsheetApp.openById("1gN2eF_l9xek_ax_dFDFSbVw3izU8c7YeNWqOcCMvbBY").getSheets()[0].getRange("B:B").getValues();
-  let sheetToCheck = SpreadsheetApp.openById("1xLMllURPx5Hpdi2Ebx6S74JW6jYusIsJYNJnEofa5oM").getSheets()[0].getRange("A:A").getValues();
+  // let answerItems = SpreadsheetApp.openById("1gN2eF_l9xek_ax_dFDFSbVw3izU8c7YeNWqOcCMvbBY").getSheets()[0].getRange("B:B").getValues();
+  let sheetToCheck = SpreadsheetApp.getActiveSheet().getSheets()[0].getRange(letterOfColumnOfItemsForChecks + ":" + letterOfColumnOfItemsForChecks).getValues();
+  let answerItems = SpreadsheetApp.openById(URLofAnswers).getSheets()[0].getRange(letterOfColumnFromAnswers + ":" + letterOfColumnFromAnswers).getValues();
+  // let sheetToCheck = SpreadsheetApp.openById("1xLMllURPx5Hpdi2Ebx6S74JW6jYusIsJYNJnEofa5oM").getSheets()[0].getRange("A:A").getValues();
   sheetToCheck = deleteEmptyStringsFromArray(sheetToCheck);
   answerItems = deleteEmptyStringsFromArray(answerItems);
   let coincidences = compareArrays(sheetToCheck, answerItems);
@@ -39,7 +41,6 @@ function compareArrays(arr1, arr2) {
 }
 
 function searchAndCheck(itemsToCheck, sheetToCheck) {
-  // var hoja =  SpreadsheetApp.openById("1xLMllURPx5Hpdi2Ebx6S74JW6jYusIsJYNJnEofa5oM").getSheetByName("Hoja 1");
   var allItems = sheetToCheck.getDataRange().getValues();
   for (var i = 0; i < itemsToCheck.length; i++) {
     for (var j = 0; j < allItems.length; j++) {

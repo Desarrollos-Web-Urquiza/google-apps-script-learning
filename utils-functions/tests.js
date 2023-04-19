@@ -20,6 +20,29 @@ function modificarDocumento () {
 
   let parrafos = doc.getBody().getParagraphs();
 
+  if(parrafos[0].getText() === "Modificar el párrafo con GAS") parrafos[0].setText('Parrafo modificado con una condición')
+  
+  if(parrafos[0].isLeftToRight()) parrafos[0].setLeftToRight(false)
+  
+  if(parrafos[0].setLeftToRight()) 
+    parrafos[0].setLeftToRight(false);
+  else  
+    parrafos[0].setLeftToRight(true);
+
+  Lloger.log('Espacio despues del tercer parrafo' + parrafo[2].getSpacingAfter())
+
+  if( parrafo[2].getSpacingAfter() == null)
+    parrafo[2].setSpacingAfter(10)
+  else if( parrafo[2].getSpacingAfter() == 10)
+    parrafo[2].setSpacingAfter(10)
+  else if( parrafo[2].getSpacingAfter() == 20)
+    parrafo[2].setSpacingAfter(30)
+  else
+    parrafo[2].setSpacingAfter(null)
+
+
+
+
 //   parrafos[0].setText('Modificar el párrafo con GAS');
 
 //   parrafos[0].setLeftToRight(false);
