@@ -1,17 +1,14 @@
 function checkAnswer(letterOfColumnOfItemsForChecks, URLofAnswers, letterOfColumnFromAnswers) {
-  // https://docs.google.com/forms/d/e/1FAIpQLSddUu96_59W5A_erBxxYP7036CjeEnQulH62w-YZOzpBesW2Q/viewform
-  // let answerFile = SpreadsheetApp.getActiveSheet(); //https://docs.google.com/spreadsheets/d/1gN2eF_l9xek_ax_dFDFSbVw3izU8c7YeNWqOcCMvbBY/edit#gid=1264652990
-  // let answerItems = SpreadsheetApp.openById("1gN2eF_l9xek_ax_dFDFSbVw3izU8c7YeNWqOcCMvbBY").getSheets()[0].getRange("B:B").getValues();
-  let sheetToCheck = SpreadsheetApp.getActiveSheet().getSheets()[0].getRange(letterOfColumnOfItemsForChecks + ":" + letterOfColumnOfItemsForChecks).getValues();
-  let answerItems = SpreadsheetApp.openById(URLofAnswers).getSheets()[0].getRange(letterOfColumnFromAnswers + ":" + letterOfColumnFromAnswers).getValues();
-  // let sheetToCheck = SpreadsheetApp.openById("1xLMllURPx5Hpdi2Ebx6S74JW6jYusIsJYNJnEofa5oM").getSheets()[0].getRange("A:A").getValues();
-  sheetToCheck = deleteEmptyStringsFromArray(sheetToCheck);
-  answerItems = deleteEmptyStringsFromArray(answerItems);
-  let coincidences = compareArrays(sheetToCheck, answerItems);
-  console.log(sheetToCheck)
-  console.log(answerItems)
-  console.log(coincidences)
-  searchAndCheck(coincidences, sheetToCheck)
+  let sheetToCheck = SpreadsheetApp.getActiveSheet()
+  
+  let sheetToCheckSheets =  sheetToCheck.getRange(letterOfColumnFromAnswers + ":" + letterOfColumnFromAnswers).getValues();
+  let answerItems = SpreadsheetApp.openById(URLofAnswers).getSheets()[0];
+  let answerItemsSheets = answerItems.getRange(letterOfColumnOfItemsForChecks + ":" + letterOfColumnOfItemsForChecks).getValues();
+  let toCheckList  = deleteEmptyStringsFromArray(sheetToCheckSheets);
+  let answerItemsList = deleteEmptyStringsFromArray(answerItemsSheets);
+  
+  let coincidences = compareArrays(toCheckList, answerItemsList);
+  searchAndCheck(coincidences, sheetToCheck, toCheckList)
 }
 
 function deleteEmptyStringsFromArray (array) {
@@ -26,6 +23,7 @@ function deleteEmptyStringsFromArray (array) {
 }
 
 function compareArrays(arr1, arr2) {
+  console.log('arr1, arr2', arr1, arr2);
   let coincidences = [];
   for (let i = 0; i < arr1.length; i++) {
     let value1 = arr1[i][0]; // acceder al valor dentro del array interno
@@ -40,12 +38,18 @@ function compareArrays(arr1, arr2) {
   return coincidences;
 }
 
-function searchAndCheck(itemsToCheck, sheetToCheck) {
-  var allItems = sheetToCheck.getDataRange().getValues();
+function searchAndCheck(itemsToCheck, allItems, allItemsSeheets) {
+  // var allItems = SpreadsheetApp.openById("1xLMllURPx5Hpdi2Ebx6S74JW6jYusIsJYNJnEofa5oM").getSheetByName("Hoja 1");
+  // allItemsSeheets = allItems.getDataRange().getValues();
+  console.log('allItems', allItems);
+  console.log('itemsToCheck', itemsToCheck);
+  console.log('allItemsSeheets', allItemsSeheets.length);
   for (var i = 0; i < itemsToCheck.length; i++) {
-    for (var j = 0; j < allItems.length; j++) {
-      if (allItems[j][0] == itemsToCheck[i][0]) {
-        sheetToCheck.getRange(j+1, 2).setValue("TRUE");
+    for (var j = 0; j < allItemsSeheets.length; j++) {
+      console.log('allItems.getRange(j+1, 2)', allItems.getRange(j+1, 2));
+      if (allItemsSeheets[j][0] == itemsToCheck[i][0]) {
+        // console.log('allItems', allItems);
+        allItems.getRange(j+1, 2).setValue("TRUE");
         break;
       }
     }
